@@ -16,8 +16,6 @@ namespace TextEdit.Lib
         }
     }
 
-    public class TextEdit {
-    };
 
 
 

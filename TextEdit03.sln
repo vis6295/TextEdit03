@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEdit.Lib", "TextEdit.Li
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0D6CABA9-2A65-4ECF-822D-28EC7C08AE66}"
 	ProjectSection(SolutionItems) = preProject
+		desc.txt = desc.txt
 		note.txt = note.txt
 	EndProjectSection
 EndProject

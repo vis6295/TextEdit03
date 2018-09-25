@@ -40,9 +40,21 @@ namespace TextEdit03.App
 {
     public partial class Form1 : Form
     {
+        TextEdit.Lib.TextEdit textEdit = null;
+
         public Form1()
         {
             InitializeComponent();
+
+            textEdit = new TextEdit.Lib.TextEdit();
+
+            this.SuspendLayout();
+
+            this.Controls.Add(textEdit);
+            textEdit.Dock = DockStyle.Fill;
+            textEdit.Parent = panel2;
+
+            this.ResumeLayout(false);
         }
 
         TextData textData = new TextData();
@@ -59,10 +71,10 @@ namespace TextEdit03.App
 
         private void button2_Click(object sender, EventArgs e)
         {
-            TextView textView = new TextView(panel2, textData);
-            MessageBox.Show($"{textView.iH} * {textView.iW}");
+            //TextView textView = new TextView(panel2, textData);
+            //MessageBox.Show($"{textView.iH} * {textView.iW}");
 
-            textView.Paint(panel2.CreateGraphics());
+            //textView.Paint(panel2.CreateGraphics());
 
         }
     }

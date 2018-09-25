@@ -29,6 +29,8 @@ namespace ConsoleApp1
             Console.WriteLine(b);
             Console.WriteLine("1234567890");
 
+            //AttributeTargets
+
             Console.ReadKey();
         }
 

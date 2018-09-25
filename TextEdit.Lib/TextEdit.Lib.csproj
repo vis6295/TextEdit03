@@ -45,6 +45,9 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextData.cs" />
+    <Compile Include="TextEdit.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TextView.cs" />
     <Compile Include="Types.cs" />
   </ItemGroup>
