@@ -43,4 +43,6 @@ https://docs.microsoft.com/ru-ru/dotnet/framework/winforms/controls/how-to-devel
 
 TextEdit теперь работает как контрол с буферным битмапом.
 
+Перенаправим вывод в буферный битмап
+
 

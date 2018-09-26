@@ -10,22 +10,22 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            string a = "abcdef";
+            //string a = "abcdefghijklmnop";
+            string a = "abcd";
             //string a = null;
             Console.WriteLine(a);
 
-            int fromPos = 2;
-            int w = 10;
+            int fromPos = 5;
 
-            string b="";
-            if (a != null && a.Length > fromPos) b = a.Substring(fromPos);
+            int lenA = a.Length;
 
-            int len = b.Length;
-            if (len > w) b = b.Substring(0, w);
-            else {
-                int ext = w - len;
-                if (ext > 0) b += new string('*', ext);
-            }
+            int w = 10; //ширина
+            int pos = fromPos; //откуда копируем
+            int len = ((lenA - pos)>0) ? lenA - pos:0;
+            int fil = (w>len) ? w - len:0;
+
+            string b = string.Concat((len>0)?a.Substring(pos, len):"", (fil>0)?new string('.', fil):"");
+
             Console.WriteLine(b);
             Console.WriteLine("1234567890");
 

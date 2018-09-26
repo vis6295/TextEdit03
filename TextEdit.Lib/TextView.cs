@@ -19,7 +19,7 @@ namespace TextEdit.Lib
 
         public int iH, iW;
 
-        public Control owner;
+        TextEdit owner;
         public TextData textData;
 
         public string[] buf;
@@ -40,14 +40,45 @@ namespace TextEdit.Lib
             //fontH = font.GetHeight();
             //fontW = (int)Math.Ceiling(font.SizeInPoints);
 
+            //this.owner = owner;
+            //iH = (int)(this.owner.Height / fontH);
+            //iW = (int)((this.owner.Width - extW) / fontW);
+
+            //this.textData = textData;
+            //buf = new string[iH];
+            //for (int i = 0; i < iH; i++) buf[i] = this.textData.GetLine(i);
+        }
+
+        public TextView(TextEdit owner)
+        {
+            iTop = 0;
+            iLeft = 0;
+
+            Graphics gr = Graphics.FromHwnd(IntPtr.Zero);
+            SizeF pt1 = gr.MeasureString("*", font);
+            SizeF pt2 = gr.MeasureString("**\n**", font);
+
+            fontW = pt2.Width - pt1.Width;
+            extW = pt1.Width - fontW;
+
+            fontH = pt2.Height - pt1.Height;
+            extH = pt1.Height - fontH;
+
             this.owner = owner;
+
+            //fontH = font.GetHeight();
+            //fontW = (int)Math.Ceiling(font.SizeInPoints);
+
+            /*
             iH = (int)(this.owner.Height / fontH);
             iW = (int)((this.owner.Width - extW) / fontW);
 
             this.textData = textData;
             buf = new string[iH];
             for (int i = 0; i < iH; i++) buf[i] = this.textData.GetLine(i);
+            */
         }
+
 
         void DrawLine(Graphics gr, int iy) //int ix,
         {
@@ -67,6 +98,17 @@ namespace TextEdit.Lib
             }
 
             gr.DrawString(s, font, Brushes.White, 0, iy * fontH);
+        }
+
+        public void DrawLine2() {
+            iH = (int)(this.owner.Height / fontH);
+            iW = (int)((this.owner.Width - extW) / fontW);
+
+            TextData textData = owner.textData;
+            buf = new string[iH];
+            for (int i = 0; i < iH; i++) buf[i] = this.textData.GetLine(i);
+
+
         }
 
         void DrawLine2(Graphics gr, int ix, int iy) //int ix,
