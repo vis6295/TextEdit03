@@ -79,9 +79,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextEdit.Lib\TextEdit.Lib.csproj">
+    <ProjectReference Include="..\TextEdit.Lib\TextEditLib.csproj">
       <Project>{ADA8A226-D575-42E7-8315-DC4908FC358A}</Project>
-      <Name>TextEdit.Lib</Name>
+      <Name>TextEditLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -10,23 +10,23 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            //string a = "abcdefghijklmnop";
-            string a = "abcd";
+            string a = "abcdefghijklmnop";
+            //string a = "abcd";
             //string a = null;
             Console.WriteLine(a);
 
-            int fromPos = 5;
-
-            int lenA = a.Length;
-
+            int leftChar = 0;
             int w = 10; //ширина
-            int pos = fromPos; //откуда копируем
-            int len = ((lenA - pos)>0) ? lenA - pos:0;
-            int fil = (w>len) ? w - len:0;
 
-            string b = string.Concat((len>0)?a.Substring(pos, len):"", (fil>0)?new string('.', fil):"");
+            //int lenA = a.Length;
 
-            Console.WriteLine(b);
+            string bb = "";
+            int aLen = (a == null) ? 0 : a.Length;
+            if (aLen > leftChar) bb = a.Substring(leftChar, ((w < aLen - leftChar) ? w : aLen - leftChar));
+            int ext = w - bb.Length;
+            if (ext > 0) bb += new string('.', ext);
+
+            Console.WriteLine(bb);
             Console.WriteLine("1234567890");
 
             //AttributeTargets

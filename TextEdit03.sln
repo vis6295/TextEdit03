@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEdit03.App", "TextEdit03.App\TextEdit03.App.csproj", "{15F91485-44A1-4012-AC94-B5D28FE900F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEdit.Lib", "TextEdit.Lib\TextEdit.Lib.csproj", "{ADA8A226-D575-42E7-8315-DC4908FC358A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEditLib", "TextEdit.Lib\TextEditLib.csproj", "{ADA8A226-D575-42E7-8315-DC4908FC358A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0D6CABA9-2A65-4ECF-822D-28EC7C08AE66}"
 	ProjectSection(SolutionItems) = preProject

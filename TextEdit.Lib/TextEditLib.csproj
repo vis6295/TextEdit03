@@ -7,7 +7,7 @@
     <ProjectGuid>{ADA8A226-D575-42E7-8315-DC4908FC358A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TextEdit.Lib</RootNamespace>
+    <RootNamespace>TextEditLib</RootNamespace>
     <AssemblyName>TextEdit.Lib</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TextEdit.Lib
+namespace TextEditLib
 {
     public class TextView
     {
@@ -15,15 +15,14 @@ namespace TextEdit.Lib
         public int iTop=0;//верхняя строка
         public int iLeft=0;//левый символ
 
-        public float fontH, fontW, extW, extH;
+        public float fontH, fontW, extW, extH;//размеры шрифра
 
         public int iH, iW;
 
         TextEdit owner;
-        public TextData textData;
 
         public string[] buf;
-
+        //public bool validBuf = false;
 
         public TextView(Control owner, TextData textData) {
 
@@ -49,14 +48,23 @@ namespace TextEdit.Lib
             //for (int i = 0; i < iH; i++) buf[i] = this.textData.GetLine(i);
         }
 
+        //StringFormat fmt = StringFormat.GenericTypographic;
+
+        
+
         public TextView(TextEdit owner)
         {
+            //fmt.FormatFlags|=StringFormatFlags.
+
+            //Brush brush = (Brush)Brushes.Green.Clone();
+            //System.Drawing.SolidBrush myBrush = new System.Drawing..SolidBrush(System.Drawing.Color.Red);
+
             iTop = 0;
             iLeft = 0;
 
             Graphics gr = Graphics.FromHwnd(IntPtr.Zero);
-            SizeF pt1 = gr.MeasureString("*", font);
-            SizeF pt2 = gr.MeasureString("**\n**", font);
+            SizeF pt1 = gr.MeasureString("*", font, new PointF(0,0), StringFormat.GenericTypographic);
+            SizeF pt2 = gr.MeasureString("**\n**", font, new PointF(0, 0), StringFormat.GenericTypographic);
 
             fontW = pt2.Width - pt1.Width;
             extW = pt1.Width - fontW;
@@ -79,7 +87,70 @@ namespace TextEdit.Lib
             */
         }
 
+        string GetString(int idx) {
+            string result = "";
+            int aLen = (buf[idx] == null) ? 0 : buf[idx].Length;
+            if (aLen > iLeft) result = buf[idx].Substring(iLeft, ((iW < aLen - iLeft) ? iW : aLen - iLeft));
+            int ext = iW - result.Length;
+            if (ext > 0) result += new string('.', ext);
+            return result;
+        }
 
+        internal void Resize()
+        {
+            int new_iH = (int)(this.owner.Height / fontH);
+            int new_iW = (int)(this.owner.Width / fontW);
+
+            if (new_iH > iH)
+            {
+                string[] new_buf = new string[new_iH];
+                for (int i = 0; i < iH; i++)
+                {
+                    new_buf[i] = buf[i];
+                }
+                for (int i = iH; i < new_iH; i++)
+                {
+                    new_buf[i] = owner.textData.GetLine(i + iTop);
+                }
+                buf = new_buf;
+            }
+            else if (new_iH < iH) {
+                string[] new_buf = new string[new_iH];
+                for (int i = 0; i < new_iH; i++) {
+                    new_buf[i] = buf[i];
+                }
+                buf = new_buf;
+            }
+
+            iH = new_iH;
+            iW = new_iW;
+        }
+
+
+        public void Paint(Graphics gr)
+        {
+
+            gr.Clear(Color.Black);
+
+            for (int i = 0; i < iH; i++) gr.DrawString(GetString(i), font, Brushes.GreenYellow, 0, i * fontH, StringFormat.GenericTypographic);
+
+            //gr.DrawRectangle(Pens.Red, fontW + extW / 2, fontH + extH / 2, (iW - 1) * fontW, (iH - 1) * fontH);
+
+            //for (int i = 0; i < iW; i++)
+            //{
+            //    float x = fontW * i + extW / 2;
+            //    gr.DrawLine(Pens.Green, x, 0, x, (iH - 1) * fontH);
+            //}
+            //for (int i = 0; i < iH; i++)
+            //{
+            //    float y = fontH * i + extH / 2;
+            //    gr.DrawLine(Pens.Green, 0, y, (iW - 1) * fontW, y);
+            //}
+
+        }
+
+
+        /*
         void DrawLine(Graphics gr, int iy) //int ix,
         {
             int t = 1;
@@ -100,16 +171,6 @@ namespace TextEdit.Lib
             gr.DrawString(s, font, Brushes.White, 0, iy * fontH);
         }
 
-        public void DrawLine2() {
-            iH = (int)(this.owner.Height / fontH);
-            iW = (int)((this.owner.Width - extW) / fontW);
-
-            TextData textData = owner.textData;
-            buf = new string[iH];
-            for (int i = 0; i < iH; i++) buf[i] = this.textData.GetLine(i);
-
-
-        }
 
         void DrawLine2(Graphics gr, int ix, int iy) //int ix,
         {
@@ -150,6 +211,7 @@ namespace TextEdit.Lib
             }
 
         }
+        */
     }
 }
 
