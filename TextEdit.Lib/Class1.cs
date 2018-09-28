@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,28 @@ namespace TextEditLib
         }
     }
 
+    public class c1 : IEnumerator
+    {
+        public object Current => throw new NotImplementedException();
+
+        public bool MoveNext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class c2 : IEnumerable
+    {
+        public IEnumerator GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
 

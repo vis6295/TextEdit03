@@ -46,12 +46,16 @@ namespace TextEditLib
         void Replace(int numStr, int pos, string data);
     }
 
+    public delegate void OnChangeLine(int numStr);
+
     /// <summary>
     /// Хранилище текстовых строк
     /// интерфейс рассчитан на обработку простых блоков (без перевода строк)
     /// </summary>
     public class TextData: ITextData
     {
+        public event OnChangeLine ChangeLine;
+
         public int Count { get { return data.Count; } }
 
         List<string> data = null;
@@ -70,6 +74,29 @@ namespace TextEditLib
         public void Save(string FilePath)
         {
             File.WriteAllLines(FilePath, data.ToArray());
+        }
+
+        internal void Insert(int lineNumber, int pos, string bufLine)
+        {
+            log.msg2(bufLine);
+            int ext = pos - data[lineNumber].Length;
+            if (ext >= 0) data[lineNumber] += new string[' ', ext] + bufLine;
+            else {
+                //string tmp = data[lineNumber];
+                //data[lineNumber] = string.Concat(
+                //    tmp.Substring(0, pos),
+                //    bufLine,
+                //    tmp.Substring(pos)
+                //    );
+                data[lineNumber] = data[lineNumber].Insert(pos, bufLine);
+            }
+
+            ChangeLine?.Invoke(lineNumber);
+        }
+
+        internal void Delete(int v, int bufPos, int bufLen)
+        {
+            throw new NotImplementedException();
         }
 
         /* Многостроковые блоки попозже реализуем

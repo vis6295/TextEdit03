@@ -47,6 +47,9 @@ namespace TextEdit03.App
 
             InitializeComponent();
 
+            log.logMsg += s => richTextBox1.AppendText(s+"\n");
+            log.logMsg2 += s => textBox1.Text=s;
+
             TextData textData = new TextData();
 
             textData.Load("..\\..\\Form1.cs");
@@ -65,6 +68,7 @@ namespace TextEdit03.App
             textEdit.Parent = panel2;
 
             this.ResumeLayout(false);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -73,6 +77,32 @@ namespace TextEdit03.App
 
         private void button2_Click(object sender, EventArgs e)
         {
+            MessageBox.Show($"{textEdit.CanFocus} {textEdit.CanSelect}");
+            bool flag = textEdit.Focus();
+            MessageBox.Show($"{flag}");
+
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            textEdit.Focus();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            System.Media.SystemSounds.Beep.Play();
+            System.Media.SystemSounds.Asterisk.Play();
+            System.Media.SystemSounds.Exclamation.Play();
+            System.Media.SystemSounds.Question.Play();
+            System.Media.SystemSounds.Hand.Play();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //Console.Beep();
+            Console.Beep(1000, 75);
+            //Console.Beep(2000, 100);
+            //Console.Beep(500, 100);
         }
     }
 }

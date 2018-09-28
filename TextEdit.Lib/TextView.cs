@@ -11,6 +11,10 @@ namespace TextEditLib
     public class TextView
     {
         public Font font = new Font("Consolas", 10);
+        public char EmptyChar = '.';//символ - заполнитель
+        public Brush DefaultBrush = Brushes.GreenYellow;//для отображения шрифта
+        public Color DefaultBkColor = Color.Black;
+        public Brush bkBrush = Brushes.Black;
 
         public int iTop=0;//верхняя строка
         public int iLeft=0;//левый символ
@@ -22,35 +26,34 @@ namespace TextEditLib
         TextEdit owner;
 
         public string[] buf;
+
         //public bool validBuf = false;
 
-        public TextView(Control owner, TextData textData) {
+        //public TextView(Control owner, TextData textData) {
 
-            Graphics gr = Graphics.FromHwnd(IntPtr.Zero);
-            SizeF pt1 = gr.MeasureString("*", font);
-            SizeF pt2 = gr.MeasureString("**\n**", font);
+        //    Graphics gr = Graphics.FromHwnd(IntPtr.Zero);
+        //    SizeF pt1 = gr.MeasureString("*", font);
+        //    SizeF pt2 = gr.MeasureString("**\n**", font);
 
-            fontW = pt2.Width - pt1.Width;
-            extW = pt1.Width - fontW;
+        //    fontW = pt2.Width - pt1.Width;
+        //    extW = pt1.Width - fontW;
 
-            fontH = pt2.Height - pt1.Height;
-            extH = pt1.Height - fontH;
+        //    fontH = pt2.Height - pt1.Height;
+        //    extH = pt1.Height - fontH;
 
-            //fontH = font.GetHeight();
-            //fontW = (int)Math.Ceiling(font.SizeInPoints);
+        //    //fontH = font.GetHeight();
+        //    //fontW = (int)Math.Ceiling(font.SizeInPoints);
 
-            //this.owner = owner;
-            //iH = (int)(this.owner.Height / fontH);
-            //iW = (int)((this.owner.Width - extW) / fontW);
+        //    //this.owner = owner;
+        //    //iH = (int)(this.owner.Height / fontH);
+        //    //iW = (int)((this.owner.Width - extW) / fontW);
 
-            //this.textData = textData;
-            //buf = new string[iH];
-            //for (int i = 0; i < iH; i++) buf[i] = this.textData.GetLine(i);
-        }
+        //    //this.textData = textData;
+        //    //buf = new string[iH];
+        //    //for (int i = 0; i < iH; i++) buf[i] = this.textData.GetLine(i);
+        //}
 
         //StringFormat fmt = StringFormat.GenericTypographic;
-
-        
 
         public TextView(TextEdit owner)
         {
@@ -87,13 +90,30 @@ namespace TextEditLib
             */
         }
 
+        /// <summary>
+        /// Выделяет строку для отображения. те. длиной iW, при необходимости заполняется EmptyChar 
+        /// </summary>
+        /// <param name="idx">номер строки в буфере</param>
+        /// <returns></returns>
         string GetString(int idx) {
             string result = "";
             int aLen = (buf[idx] == null) ? 0 : buf[idx].Length;
             if (aLen > iLeft) result = buf[idx].Substring(iLeft, ((iW < aLen - iLeft) ? iW : aLen - iLeft));
             int ext = iW - result.Length;
-            if (ext > 0) result += new string('.', ext);
+            if (ext > 0) result += new string(EmptyChar, ext);
             return result;
+        }
+
+        /// <summary>
+        /// Возвращает символ, расположенный в соответствующих координатах
+        /// </summary>
+        /// <param name="ix"></param>
+        /// <param name="iy"></param>
+        /// <returns></returns>
+        public char GetChar(int idx, int idy)
+        {
+            if (buf[idy]==null || buf[idy].Length<=iLeft+idx) return EmptyChar;
+            return buf[idy][iLeft + idx];
         }
 
         internal void Resize()
@@ -129,24 +149,40 @@ namespace TextEditLib
 
         public void Paint(Graphics gr)
         {
+            gr.Clear(DefaultBkColor);
+            for (int i = 0; i < iH; i++) gr.DrawString(GetString(i), font, DefaultBrush, 0, i * fontH, StringFormat.GenericTypographic);
+        }
 
-            gr.Clear(Color.Black);
 
-            for (int i = 0; i < iH; i++) gr.DrawString(GetString(i), font, Brushes.GreenYellow, 0, i * fontH, StringFormat.GenericTypographic);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="ix"></param>
+        /// <param name="iy"></param>
+        public void PaintChar(Graphics graphics, int idx, int idy) {
+            PointF pos = new PointF(fontW * idx, fontH * idy);
+            graphics.FillRectangle(bkBrush, pos.X, pos.Y, fontW, fontH);
+            graphics.DrawString(string.Empty + GetChar(idx, idy), font, DefaultBrush, pos, StringFormat.GenericTypographic);
+        }
 
-            //gr.DrawRectangle(Pens.Red, fontW + extW / 2, fontH + extH / 2, (iW - 1) * fontW, (iH - 1) * fontH);
-
-            //for (int i = 0; i < iW; i++)
-            //{
-            //    float x = fontW * i + extW / 2;
-            //    gr.DrawLine(Pens.Green, x, 0, x, (iH - 1) * fontH);
-            //}
-            //for (int i = 0; i < iH; i++)
-            //{
-            //    float y = fontH * i + extH / 2;
-            //    gr.DrawLine(Pens.Green, 0, y, (iW - 1) * fontW, y);
-            //}
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="ix"></param>
+        /// <param name="iy"></param>
+        /// <param name="color"></param>
+        /// <param name="bkColor"></param>
+        public void PaintChar(Graphics graphics, int idx, int idy, Color color, Color bkColor)
+        {
+            using (Brush bkBrush = new SolidBrush(bkColor))
+            using (Brush fontBrush = new SolidBrush(color))
+            {
+                PointF pos = new PointF(fontW * idx, fontH * idy);
+                graphics.FillRectangle(bkBrush, pos.X, pos.Y, fontW, fontH);
+                graphics.DrawString(string.Empty + GetChar(idx, idy), font, fontBrush, pos, StringFormat.GenericTypographic);
+            }
         }
 
 
